@@ -12,7 +12,7 @@ const createHistory =async(req,res)=>{
             if(url.length >=2){
             item.url = url[2];
             }else{
-                console.log("se perdio algo");
+              //  console.log("se perdio algo");
             }
             delete item.favicon_url;
             delete item.page_transition;
@@ -43,11 +43,11 @@ const createHistory =async(req,res)=>{
             {$match:{"_id":data._id}},
             {$group:{_id:"$histories.url",total:{$sum:1}}}
         ])
-        console.log(re);
+        await historyModel.deleteById(data._id)
+       // console.log(re);
         re.forEach(item=>{
             categorias.forEach(categoria=>{
                 categoria.dominios.forEach(dominio=>{
-                    
                     if(item._id.includes(dominio)){
                         categoria.visitas+= item.total
                         item.total=0;
@@ -62,12 +62,12 @@ const createHistory =async(req,res)=>{
                 categorias[categorias.length-1].visitas += item.total;
             }
         })
-        console.log(categorias);
+       // console.log(categorias);
         let total = 0;
         categorias.forEach(categoria=>{
             total += categoria.visitas;
         })
-        console.log(total);
+        //console.log(total);
 
         let graph = {}
         graph.user = user;
