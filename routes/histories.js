@@ -1,11 +1,11 @@
 const express = require('express');
 const { createHistory, getHistories,deleteHistory, getHistory } = require('../controllers/histories');
-const {validateIdUser} = require('../validators/users');
+const {validateId} = require('../validators/id');
 const router = express.Router();
 
 router.get('/',getHistories);
-router.get('/:id',validateIdUser,getHistory);
+router.get('/:id',validateId,getHistory);
 router.post('/',createHistory);
-router.delete('/:id',validateIdUser,deleteHistory)
+router.delete('/:id',validateId,deleteHistory)
 
 module.exports = router;

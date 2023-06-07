@@ -18,15 +18,7 @@ const valideUpdateUser = [
     }
 ];
 
-const validateIdUser = [
-    check("id").exists().isMongoId(),
-    (req,res,next)=>{
-        validateResults(req,res,next)
-    }
-    ];
-
 module.exports = {
     validateCreateUser,
-    valideUpdateUser,
-    validateIdUser
+    valideUpdateUser
 }
