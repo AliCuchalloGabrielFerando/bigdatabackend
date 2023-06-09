@@ -1,9 +1,10 @@
 const { matchedData} = require('express-validator');
 const handleHttpError = require('../utils/handleErrors');
 const {historyModel,graphicsModel} = require('../models');
+
 const createHistory =async(req,res)=>{
+
     const body = req.body;
-    console.log(body.histories.length);
     try{
         const user = body.user;
         delete body.user;
@@ -114,18 +115,6 @@ const deleteHistory = async(req,res)=>{
     }
 }
 
-/*const mapFunction = function(){
-    let key = this.user.name;
-    let value = this.user.age;
-    emit(key,value);
-}
-const reduceFunction = function(id,countObjVals){
-  reduceValue =0;
- /* foreach(countObjVals as element){
-      reduceValue += countObjVals[i];
-  }
-  return reduceValue;
-}*/
 module.exports={
     createHistory,
     getHistories,
