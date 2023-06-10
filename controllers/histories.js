@@ -1,5 +1,6 @@
 const { matchedData} = require('express-validator');
 const handleHttpError = require('../utils/handleErrors');
+const categorias = require('../config/categorias.json');
 const {historyModel,graphicsModel} = require('../models');
 
 const createHistory =async(req,res)=>{
@@ -22,21 +23,6 @@ const createHistory =async(req,res)=>{
             delete item.time_usec;
         })
 
-        const categorias =[
-            {name:'comunicacion',dominios:['meet','whatsapp','eldeber','infobae','paginasiete','lostiempos','atlassian',
-            'genbeta','facebook','zoom','twitter','echaloasuerte','trello'],visitas:0},
-            {name:'cursos',dominios:['udemy','youtube','cursosdev','aprendible','blumbitvirtual','coursera'],visitas:0},
-            {name:'trabajo',dominios:['mail','cloud','firebase','google','uagrm','mongodb','laravel','github','tailwindcss','tailwindui',
-            'tabnine','slideshare','mozilla','strapi','stackoverflow','angular','npmjs','wikipedia','developers','newtab',
-            'microsoft','getbootstrap','laragon','laracasts','arcgis'],visitas:0},
-            {name:'ocio',dominios:['novelfull','animeflv','mangaowl','gardenmanage','esports','soymotor',
-            'xataka','brawltime','bolavip','motorsport','marca','diariomotor','20minutos','cinecente',
-            'donbalon','manaco','lalatina','chess','gamestorrents','webnovelonline','towerofgod','statsroyale','seriesflix',
-            'androidcleaner','volarenovels','deviantart'],visitas:0},
-            {name:'pruebas',dominios:['localhost','herokuapp','heroku','expressjs','192.168','mediafire','pgsharp','127.0.0.1',
-            'mega'],visitas:0},
-            {name:'otros',dominios:[],visitas:0}
-        ]
         const data = await historyModel.create(body);
 
         const re = await historyModel.aggregate([
@@ -45,7 +31,6 @@ const createHistory =async(req,res)=>{
             {$group:{_id:"$histories.url",total:{$sum:1}}}
         ])
         await historyModel.deleteById(data._id)
-       // console.log(re);
         re.forEach(item=>{
             categorias.forEach(categoria=>{
                 categoria.dominios.forEach(dominio=>{
@@ -63,12 +48,10 @@ const createHistory =async(req,res)=>{
                 categorias[categorias.length-1].visitas += item.total;
             }
         })
-       // console.log(categorias);
         let total = 0;
         categorias.forEach(categoria=>{
             total += categoria.visitas;
         })
-        //console.log(total);
 
         let graph = {}
         graph.user = user;
